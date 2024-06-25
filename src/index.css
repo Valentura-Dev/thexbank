@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter';
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  p,
+  span {
+    @apply text-secondary-100;
+  }
+
+  h1,.h1 {
+    @apply text-xl leading-xl;
+  }
+
+  h2,.h2 {
+    @apply text-lg leading-[auto];
+  }
+
+  h3,.h3 {
+    @apply text-md leading-[auto];
+  }
+
+  h4,.h4 {
+    @apply text-sm leading-[auto];
+  }
+
+  h5,.h5 {
+    @apply text-xs leading-[auto];
+  }
+
+  h6, .h6 {
+    @apply text-xxs leading-[auto];
+  }
+}
