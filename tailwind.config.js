@@ -13,6 +13,9 @@ export default {
           700: '#07877d',
           900: '#2cdd4d'
         },
+        accent: {
+          700: '#BDFF00'
+        },
         blue: {
           400: '#9599B3'
         },

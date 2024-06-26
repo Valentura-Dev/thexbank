@@ -1,11 +1,21 @@
 import './App.css';
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import NotFound from './pages/NotFound.jsx';
 import { ProtectedRoute } from './components';
 import { useEffect, useState } from 'react';
 import axiosSetup from './axiosSetup';
 import { Login, Home } from "./pages";
+import KYC from "./pages/KYC.jsx";
+import Exchange from "./pages/Exchange.jsx";
+
+const Redirect = ({to}) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate(to);
+  }, []);
+  return null;
+};
 
 const HelpDexRoutes = () => {
   const location = useLocation();
@@ -22,8 +32,10 @@ const HelpDexRoutes = () => {
   return (
     <Routes location={location}>
       <Route element={<ProtectedRoute />} errorElement={<NotFound />}>
-        <Route path="/" element={<></>} />
+        <Route path="/" element={<Redirect to="/dashboard" />} />
         <Route path="/dashboard" element={<Home />} />
+        <Route path="/verify-kyc" element={<KYC />} />
+        <Route path="/exchange" element={<Exchange />} />
       </Route>
       <Route path="/login" element={<Login />} />
     </Routes>
