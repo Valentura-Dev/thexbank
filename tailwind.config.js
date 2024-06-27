@@ -4,13 +4,15 @@ export default {
   theme: {
     extend: {
       screens: {
-        xs: '320px'
+        xs: '380px',
+        '2xs': '320px'
       },
       colors: {
         primary: {
           disabled: '#d3dbde',
           400: '#e3ebee',
           700: '#07877d',
+          800: '#4CA813',
           900: '#2cdd4d'
         },
         accent: {

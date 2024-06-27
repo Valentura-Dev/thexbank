@@ -8,6 +8,7 @@ import axiosSetup from './axiosSetup';
 import { Login, Home } from "./pages";
 import KYC from "./pages/KYC.jsx";
 import Exchange from "./pages/Exchange.jsx";
+import Send from "./pages/Send.jsx";
 
 const Redirect = ({to}) => {
   const navigate = useNavigate();
@@ -30,12 +31,14 @@ const HelpDexRoutes = () => {
   }, [token]);
 
   return (
+    
     <Routes location={location}>
       <Route element={<ProtectedRoute />} errorElement={<NotFound />}>
         <Route path="/" element={<Redirect to="/dashboard" />} />
         <Route path="/dashboard" element={<Home />} />
         <Route path="/verify-kyc" element={<KYC />} />
         <Route path="/exchange" element={<Exchange />} />
+        <Route path="/send" element={<Send />} />
       </Route>
       <Route path="/login" element={<Login />} />
     </Routes>

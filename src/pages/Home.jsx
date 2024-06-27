@@ -92,14 +92,19 @@ const Home = () => {
         <button className=" bg-primary-700 flex-1 border-[1px] border-secondary-50 px-[11px] py-[16px] rounded-[10px]">
           <h5 className=" text-secondary-700">Add Money</h5>
         </button>
-        <a href="/exchange">
-          <button className=" border-[1px] flex-1 border-primary-700 px-[11px] py-[16px] rounded-[10px]">
-            <h5 className=" text-primary-700">Exchange</h5>
-          </button>
-        </a>
-        <button className=" bg-primary-700 flex-1 border-[1px] border-secondary-50 px-[11px] py-[16px] rounded-[10px]">
+        <div className="flex-1">
+          <a href="/exchange" className="flex-1 w-full">
+            <button className=" border-[1px] flex-1 w-full h-full border-primary-700 px-[11px] py-[16px] rounded-[10px]">
+              <h5 className=" text-primary-700">Exchange</h5>
+            </button>
+          </a>
+        </div>
+        <a
+          href="/send"
+          className="flex justify-center items-center cursor-pointer bg-primary-700 border-[1px] border-secondary-50 px-[11px] py-[16px] rounded-[10px] flex-1"
+        >
           <h5 className=" text-secondary-700">Send</h5>
-        </button>
+        </a>
       </div>
       <div className="mt-16 w-full px-9 pb-[77px]">
         <div className="flex flex-col gap-[7px]">
