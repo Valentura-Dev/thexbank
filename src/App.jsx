@@ -18,7 +18,7 @@ const Redirect = ({to}) => {
   return null;
 };
 
-const HelpDexRoutes = () => {
+const ThexbankRoutes = () => {
   const location = useLocation();
   function getToken() {
     return localStorage.getItem('token');
@@ -49,7 +49,7 @@ const App = () => {
   return (
     <>
       <BrowserRouter>
-        <HelpDexRoutes />
+        <ThexbankRoutes />
       </BrowserRouter>
       <Toaster />
     </>
