@@ -50,6 +50,31 @@ const data = [
 const Home = () => {
   const [KYC, setKYC] = useState({});
   const [isKYCVerified, setIsKYCVerified] = useState(false);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    const myHeaders = new Headers();
+    myHeaders.append('accept', 'application/json');
+    myHeaders.append(
+      'Authorization',
+      'token ead03582c4972c7c9f116cb49e730eb97e214b05'
+    );
+
+    const requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    fetch('https://dev.thexbank.io/api/users/profile/profile', requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        setUser(result.data);
+      })
+      .catch((error) => console.error(error));
+  }, []);
 
   useEffect(() => {
     const pureKYC = localStorage.getItem('kyc');

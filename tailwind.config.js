@@ -48,15 +48,3 @@ export default {
   },
   plugins: [],
 };
-
-/*
-
-sizes line_height
-10 auto
-16 auto
-20 auto
-24 auto
-36 auto
-40 48px
-
-*/

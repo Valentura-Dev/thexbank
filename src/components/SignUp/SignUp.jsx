@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { json } from 'react-router-dom';
 
-export default function SignUp({onSubmit}) {
+export default function SignUp({ onSubmit }) {
   const fullName = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
   const phoneNumber = useRef(null);
   const form = useRef(null);
+  const signup = useRef(null);
 
   const [isValid, setIsValid] = useState(false);
 
@@ -22,15 +24,69 @@ export default function SignUp({onSubmit}) {
     }
   }
 
+  function parseFullName(fullName) {
+    let nameParts = fullName.trim().split(' ');
+    if (nameParts.length === 0) {
+      return { name: '', surname: '' };
+    }
+
+    if (nameParts.length === 1) {
+      return { name: nameParts[0], surname: '' };
+    }
+
+    let surname = nameParts.pop();
+    let name = nameParts.join(' ');
+
+    return { name, surname };
+  }
+
   function submit(e) {
     e?.preventDefault();
-    if (isValid) onSubmit({
-      from: 'signup',
-      fullName: fullName.current.value,
-      email: email.current.value,
-      password: password.current.value,
-      phoneNumber: phoneNumber.current.value,
-    });
+    if (isValid) {
+      const { name, surname } = parseFullName(fullName.current.value);
+      console.log(
+        'body',
+        JSON.stringify({
+          name: name,
+          surname: surname,
+          email: email.current.value,
+          password: password.current.value,
+          phone: phoneNumber.current.value,
+        })
+      );
+      fetch('https://dev.thexbank.io/api/users/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name,
+          surname: surname,
+          email: email.current.value,
+          password: password.current.value,
+          phone: phoneNumber.current.value,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            signup.current.innerText = 'Invalid inputs';
+            setTimeout(() => {
+              signup.current.innerText = 'Sign up';
+            }, 2000);
+          } else {
+            localStorage.setItem('email', email.current.value);
+            localStorage.setItem('password', password.current.value);
+            onSubmit({
+              from: 'signup',
+              fullName: fullName.current.value,
+              email: email.current.value,
+              password: password.current.value,
+              phoneNumber: phoneNumber.current.value,
+            });
+          }
+        });
+    }
   }
 
   useEffect(() => {
@@ -88,6 +144,7 @@ export default function SignUp({onSubmit}) {
           }
         >
           <h5
+          ref={signup}
             onClick={submit}
             className=" text-secondary-700 pt-[13px] pb-[16px]"
           >

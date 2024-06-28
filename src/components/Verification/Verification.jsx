@@ -6,9 +6,10 @@ import { useState } from 'react';
 export default function Verification() {
   const [otp, setOtp] = useState('');
   const navigate = useNavigate();
+  const [isFailed, setIsFailed] = useState(false);
 
   function addNumber(number) {
-    if (otp.length < 4) {
+    if (otp.length < 6) {
       onChange(otp + number);
     }
   }
@@ -19,10 +20,38 @@ export default function Verification() {
 
   function onChange(newOtp) {
     setOtp(newOtp);
-    if (newOtp.length === 4) {
-      console.log('OTP:', newOtp);
-      localStorage.setItem('token', newOtp);
-      navigate('/dashboard');
+    if (newOtp.length === 6) {
+
+      const email = localStorage.getItem('email');
+      const password = localStorage.getItem('password');
+
+      fetch('https://dev.thexbank.io/api/users/auth/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          otp_code: newOtp,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            onChange('');
+            setIsFailed(true);
+            setTimeout(() => {
+              setIsFailed(false);
+            }, 1000);
+          } else {
+            localStorage.setItem('token', data.data.token);
+            localStorage.removeItem('email');
+            localStorage.removeItem('password');
+            navigate('/dashboard');
+          }
+        });
+
     }
   }
 
@@ -34,14 +63,14 @@ export default function Verification() {
           <OtpInput
             value={otp}
             onChange={onChange}
-            numInputs={4}
+            numInputs={6}
             renderSeparator={<div className="w-[11px]" />}
             inputStyle={{
-              backgroundColor: '#e3ebee',
-              fontSize: '40px',
+              backgroundColor: isFailed ? '#FFD2D2' : '#e3ebee',
+              fontSize: '24px',
               lineHeight: '48px',
-              padding: '16px',
-              width: '60px',
+              padding: '8px 10px',
+              width: '40px',
               borderRadius: '20px',
               outline: 'none',
             }}

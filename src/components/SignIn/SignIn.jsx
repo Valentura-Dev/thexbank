@@ -4,6 +4,7 @@ export default function SignIn({ onSubmit }) {
   const email = useRef(null);
   const password = useRef(null);
   const form = useRef(null);
+  const signin = useRef(null);
 
   const [isValid, setIsValid] = useState(false);
 
@@ -18,11 +19,35 @@ export default function SignIn({ onSubmit }) {
   function submit(e) {
     e?.preventDefault();
     if (isValid)
-      onSubmit({
-        from: 'signin',
-        email: email.current.value,
-        password: password.current.value,
-      });
+
+      fetch('https://dev.thexbank.io/api/users/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email.current.value,
+          password: password.current.value,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            onChange('');
+            signin.current.innerHTML = 'Invalid credentials';
+            setTimeout(() => {
+              signin.current.innerHTML = 'Next';
+            }, 3000);
+          } else {
+            localStorage.setItem('email', email.current.value);
+            localStorage.setItem('password', password.current.value);
+            onSubmit({
+              from: 'signin',
+              email: email.current.value,
+              password: password.current.value,
+            });
+          }
+        });
   }
 
   useEffect(() => {
@@ -66,6 +91,7 @@ export default function SignIn({ onSubmit }) {
         >
           <h5
             onClick={submit}
+            ref={signin}
             className=" text-secondary-700 pt-[13px] pb-[16px]"
           >
             {isValid ? 'Sign in' : 'Next'}
