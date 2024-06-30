@@ -114,9 +114,13 @@ const Home = () => {
         </div>
       </div>
       <div className="mt-6 w-full px-9 flex gap-3">
-        <button className=" bg-primary-700 flex-1 border-[1px] border-secondary-50 px-[11px] py-[16px] rounded-[10px]">
-          <h5 className=" text-secondary-700">Add Money</h5>
-        </button>
+        <div className="flex-1">
+          <a href="/add-money" className="flex-1 w-full">
+            <button className=" bg-primary-700 flex-1 w-full border-[1px] border-secondary-50 px-[11px] py-[16px] rounded-[10px]">
+              <h5 className=" text-secondary-700">Add Money</h5>
+            </button>
+          </a>
+        </div>
         <div className="flex-1">
           <a href="/exchange" className="flex-1 w-full">
             <button className=" border-[1px] flex-1 w-full h-full border-primary-700 px-[11px] py-[16px] rounded-[10px]">

@@ -6,6 +6,12 @@ import "./index.css";
 // Inter
 import "@fontsource/inter"; 
 
+// Roboto
+import "@fontsource/roboto";
+
+// Poppins
+import "@fontsource/poppins";
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <App />

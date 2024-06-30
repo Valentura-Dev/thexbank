@@ -1236,6 +1236,11 @@
   resolved "https://registry.yarnpkg.com/@fontsource/playfair-display/-/playfair-display-5.0.24.tgz#a5466c113f63ad1d50e6c7cb983815bc305df0d3"
   integrity sha512-r+h+PWl8R4dIQ5FikbwUGBF/DPsozH7YcfCxEcUm9SthLCcdKT53KH7iNGhF8RTCV325dyu/JjrA3G3JPUl5hQ==
 
+"@fontsource/poppins@^5.0.14":
+  version "5.0.14"
+  resolved "https://registry.yarnpkg.com/@fontsource/poppins/-/poppins-5.0.14.tgz#c7ede0730859dc0c1b85d1a92e4cb0f2223db0ae"
+  integrity sha512-nmM1zpPo3Uh4JcGAVSQuWaZNYh2FbbwWhZ5t6hRaynmJaNTBW85d3nEh9zMmzI0HX7X5xqQVdRHeDatKpOGsnA==
+
 "@fontsource/red-hat-display@^5.0.20":
   version "5.0.20"
   resolved "https://registry.yarnpkg.com/@fontsource/red-hat-display/-/red-hat-display-5.0.20.tgz#d17e15bbe78ee654152b1f5eddc096d5ea654e9f"
