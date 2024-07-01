@@ -1,17 +1,58 @@
-import './App.css';
-import { BrowserRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
-import NotFound from './pages/NotFound.jsx';
-import { ProtectedRoute } from './components';
-import { useEffect, useState } from 'react';
-import axiosSetup from './axiosSetup';
+import "./App.css";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import NotFound from "./pages/NotFound.jsx";
+import { ProtectedRoute } from "./components";
+import { useEffect, useState } from "react";
+import axiosSetup from "./axiosSetup";
 import { Login, Home } from "./pages";
 import KYC from "./pages/KYC.jsx";
 import Send from "./pages/Send.jsx";
 import AddMoney from "./pages/AddMoney.jsx";
 import Exchange from "./pages/Exchange.jsx";
+import { WagmiProvider } from "wagmi";
+import { createWeb3Modal } from "@web3modal/wagmi/react";
+import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
+import { fantom } from "wagmi/chains";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
-const Redirect = ({to}) => {
+
+const queryClient = new QueryClient()
+
+const projectId = "6833394610e306b19798c7797fc8bab7";
+
+const metadata = {
+  name: "Thexbank",
+  description: "Thexbank",
+  url: "https://thexbank.helpdex.io",
+  icons: ["https://avatars.githubusercontent.com/u/37784886"],
+};
+
+const chains = [fantom];
+const config = defaultWagmiConfig({
+  chains,
+  projectId,
+  metadata,
+});
+
+
+createWeb3Modal({
+  wagmiConfig: config,
+  projectId,
+  enableAnalytics: true,
+  enableOnramp: true,
+  defaultChain: fantom,
+  allowUnsupportedChain: false
+});
+
+
+const Redirect = ({ to }) => {
   const navigate = useNavigate();
   useEffect(() => {
     navigate(to);
@@ -22,7 +63,7 @@ const Redirect = ({to}) => {
 const ThexbankRoutes = () => {
   const location = useLocation();
   function getToken() {
-    return localStorage.getItem('token');
+    return localStorage.getItem("token");
   }
 
   const [token, _] = useState(getToken());
@@ -32,7 +73,6 @@ const ThexbankRoutes = () => {
   }, [token]);
 
   return (
-    
     <Routes location={location}>
       <Route element={<ProtectedRoute />} errorElement={<NotFound />}>
         <Route path="/" element={<Redirect to="/dashboard" />} />
@@ -50,9 +90,13 @@ const ThexbankRoutes = () => {
 const App = () => {
   return (
     <>
-      <BrowserRouter>
-        <ThexbankRoutes />
-      </BrowserRouter>
+      <WagmiProvider config={config}>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <ThexbankRoutes />
+          </BrowserRouter>
+        </QueryClientProvider>
+      </WagmiProvider>
       <Toaster />
     </>
   );
