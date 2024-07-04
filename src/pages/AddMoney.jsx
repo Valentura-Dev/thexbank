@@ -6,6 +6,9 @@ import sol from '../assets/icons/sol.png';
 import usdt from '../assets/icons/usdt.png';
 import eur from '../assets/icons/eur.png';
 import gbp from '../assets/icons/gbp.png';
+import qrIcon from '../assets/icons/qr.svg';
+
+
 import { useRef, useState } from 'react';
 
 const data = [
@@ -129,9 +132,9 @@ const ChooseAsset = ({ onSubmit }) => {
 };
 
 const QR = ({ asset, backToChooseAsset }) => {
-  if (asset !== 'BTC') return <>Currently only bitcoin supporting</>;
+  if (asset !== 'SOL') return <>Currently only solana supporting</>;
   const [code, setCode] = useState(
-    '6XHdhax8iuDCZvU4TjWkLcP6fiN2yGBdmq8ruZY3JChY'
+    '6XHdhax8iuDCZvU4TjWkLc****************'
   );
   const [isCopied, setIsCopied] = useState(false);
 
@@ -154,8 +157,9 @@ const QR = ({ asset, backToChooseAsset }) => {
       </div>
       <div className="flex-1 w-full flex flex-col items-center pt-[51px]">
         <h3 className="font-bold">Solana Wallet</h3>
-        <div className="border-[1px] border-secondary-50 rounded-[20px] mt-9">
-          <h3 className="font-bold px-5 py-16">QR Code</h3>
+        <div className="border-[1px] border-secondary-50 rounded-[20px] mt-9 p-3">
+          {/* <h3 className="font-bold px-5 py-16">QR Code</h3> */}
+          <img src={qrIcon} alt="" className="" />
         </div>
         <div className="px-5 pt-9">
           <span className="text-[14px] text-secondary-100 font-light text-center break-all">
@@ -175,7 +179,7 @@ const QR = ({ asset, backToChooseAsset }) => {
       </div>
       <div className="flex flex-col w-full gap-3 pt-4 px-[6px] pb-[80px]">
         <h5 className=" font-light text-center">
-          Send only Bitcoin (BTC) to this address. Sending other coins mayresult
+          Send only Solana (SOL) to this address. Sending other coins mayresult
           in permanent loss.
         </h5>
         <button onClick={backToChooseAsset} className="w-full bg-secondary-700">

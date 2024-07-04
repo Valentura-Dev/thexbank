@@ -43,6 +43,7 @@ const UploadKYC = ({ onSubmit }) => {
               Select Document Type
             </option>
             <option value="pasaport">Pasaport</option>
+            <option value="proofofaddress">Proof of address</option>
           </select>
         </div>
       </div>

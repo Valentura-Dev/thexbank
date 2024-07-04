@@ -1,55 +1,55 @@
-import LogoText from '../assets/icons/LogoTextBlack.png';
-import BackIcon from '../assets/icons/backBlack.svg';
-import bitcoin from '../assets/icons/bitcoin.png';
-import ethereum from '../assets/icons/ethereum.png';
-import sol from '../assets/icons/sol.png';
-import usdt from '../assets/icons/usdt.png';
-import eur from '../assets/icons/eur.png';
-import gbp from '../assets/icons/gbp.png';
-import arrowDown from '../assets/icons/arrowDown.svg';
-import _switch from '../assets/icons/switch.png';
-import { useEffect, useState } from 'react';
+import LogoText from "../assets/icons/LogoTextBlack.png";
+import BackIcon from "../assets/icons/backBlack.svg";
+import bitcoin from "../assets/icons/bitcoin.png";
+import ethereum from "../assets/icons/ethereum.png";
+import sol from "../assets/icons/sol.png";
+import usdt from "../assets/icons/usdt.png";
+import eur from "../assets/icons/eur.png";
+import gbp from "../assets/icons/gbp.png";
+import arrowDown from "../assets/icons/arrowDown.svg";
+import _switch from "../assets/icons/switch.png";
+import { useEffect, useState } from "react";
 
 const data = [
   {
     icon: bitcoin,
-    title: 'Bitcoin',
-    short: 'BTC',
-    balance: '0.00',
+    title: "Bitcoin",
+    short: "BTC",
+    balance: "0.00",
   },
   {
-    title: 'Ethereum',
+    title: "Ethereum",
     icon: ethereum,
-    short: 'ETH',
-    balance: '0.00',
+    short: "ETH",
+    balance: "0.00",
   },
   {
-    title: 'SOL',
+    title: "SOL",
     icon: sol,
-    short: 'SOL',
-    balance: '0.00',
+    short: "SOL",
+    balance: "0.00",
   },
   {
-    title: 'USDT',
+    title: "USDT",
     icon: usdt,
-    short: 'USDT',
-    balance: '0.00',
+    short: "USDT",
+    balance: "0.00",
   },
   {
-    title: 'EUR',
+    title: "EUR",
     icon: eur,
-    short: 'EUR',
-    balance: '0.00',
+    short: "EUR",
+    balance: "0.00",
   },
   {
-    title: 'GBP',
+    title: "GBP",
     icon: gbp,
-    short: 'GBP',
-    balance: '0.00',
+    short: "GBP",
+    balance: "0.00",
   },
 ];
 
-function Currency({ type, currecyName, setNewCurrency }) {
+function Currency({ type, currecyName, setNewCurrency, price }) {
   const [selectedCurrency, setSelectedCurrency] = useState({});
   const [isOpen, setIsOpen] = useState(false);
 
@@ -61,17 +61,15 @@ function Currency({ type, currecyName, setNewCurrency }) {
   return (
     <div className="w-full bg-primary-900 border-[1px] border-[#BDBDBD] rounded-lg flex justify-between items-center px-4 py-2">
       <div className="flex flex-col">
-        <h6 className="family-roboto">{
-          type === 'from' ? 'From' : 'To'
-          }</h6>
-        <span className="text-[14px] family-roboto">1.24</span>
+        <h6 className="family-roboto">{type === "from" ? "From" : "To"}</h6>
+        <span className="text-[14px] family-roboto">{price}</span>
       </div>
       <div className="relative">
         <div
           className={[
-            'absolute mt-8 -translate-x-3 z-10 overflow-y-auto flex flex-col gap-1 bg-primary-800 rounded-xl transition-all duration-300',
-            isOpen ? 'max-h-36 p-2' : 'max-h-0 p-0',
-          ].join(' ')}
+            "absolute mt-8 -translate-x-3 z-10 overflow-y-auto flex flex-col gap-1 bg-primary-800 rounded-xl transition-all duration-300",
+            isOpen ? "max-h-36 p-2" : "max-h-0 p-0",
+          ].join(" ")}
         >
           {data.map((currency, index) => {
             const isSelected = selectedCurrency?.short === currency.short;
@@ -84,13 +82,13 @@ function Currency({ type, currecyName, setNewCurrency }) {
                 }}
                 key={index}
                 className={[
-                  'flex items-center gap-[6px] pl-3 pr-8 py-2 rounded-lg ',
+                  "flex items-center gap-[6px] pl-3 pr-8 py-2 rounded-lg ",
                   isSelected
-                    ? 'bg-primary-700 cursor-not-allowed'
-                    : 'bg-primary-900 cursor-pointer',
-                ].join(' ')}
+                    ? "bg-primary-700 cursor-not-allowed"
+                    : "bg-primary-900 cursor-pointer",
+                ].join(" ")}
               >
-                <img src={currency.icon || ''} className="size-[21px]" alt="" />
+                <img src={currency.icon || ""} className="size-[21px]" alt="" />
                 <h5 className="family-poppins font-semibold">
                   {currency.short}
                 </h5>
@@ -98,9 +96,12 @@ function Currency({ type, currecyName, setNewCurrency }) {
             );
           })}
         </div>
-        <div className="flex items-center gap-[6px] cursor-pointer" onClick={() => setIsOpen(prev => !prev)}>
+        <div
+          className="flex items-center gap-[6px] cursor-pointer"
+          onClick={() => setIsOpen((prev) => !prev)}
+        >
           <img
-            src={selectedCurrency?.icon || ''}
+            src={selectedCurrency?.icon || ""}
             className="size-[21px]"
             alt=""
           />
@@ -117,8 +118,8 @@ function Currency({ type, currecyName, setNewCurrency }) {
 }
 
 export default function Exchange() {
-  const [firstCurrency, setFirstCurrency] = useState('SOL');
-  const [secondCurrency, setSecondCurrency] = useState('EUR');
+  const [firstCurrency, setFirstCurrency] = useState("SOL");
+  const [secondCurrency, setSecondCurrency] = useState("EUR");
 
   function switchCurrency() {
     const tempSecondCurrency = secondCurrency;
@@ -129,9 +130,9 @@ export default function Exchange() {
   return (
     <div className="flex flex-col min-h-dvh">
       <div className="flex justify-between items-center mt-3">
-        <div>
+        <a href="/dashboard">
           <img src={BackIcon} alt="" className="cursor-pointer ml-[6px]" />
-        </div>
+        </a>
         <img src={LogoText} alt="" className=" w-[150px]" />
         <div className="w-12"></div>
       </div>
@@ -139,9 +140,24 @@ export default function Exchange() {
         <h3 className="font-bold">Exchange</h3>
         <img src="/logo.svg" className="size-[132px] mt-2" alt="" />
         <div className="pt-[46px] w-full px-9 flex flex-col items-center gap-4">
-          <Currency type="from" currecyName={firstCurrency} setNewCurrency={setFirstCurrency} />
-          <img src={_switch} alt="" className="size-10 cursor-pointer" onClick={switchCurrency} />
-          <Currency type="to" currecyName={secondCurrency} setNewCurrency={setSecondCurrency} />
+          <Currency
+            type="from"
+            currecyName={firstCurrency}
+            setNewCurrency={setFirstCurrency}
+            price={1.24}
+          />
+          <img
+            src={_switch}
+            alt=""
+            className="size-10 cursor-pointer"
+            onClick={switchCurrency}
+          />
+          <Currency
+            type="to"
+            currecyName={secondCurrency}
+            setNewCurrency={setSecondCurrency}
+            price={155.57}
+          />
         </div>
       </div>
       <div className="flex flex-col w-full gap-3 pt-6 px-[30px] pb-[89px]">
