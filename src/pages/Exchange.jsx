@@ -6,63 +6,57 @@ import sol from "../assets/icons/sol.png";
 import usdt from "../assets/icons/usdt.png";
 import eur from "../assets/icons/eur.png";
 import gbp from "../assets/icons/gbp.png";
+import xrp from "../assets/icons/xrp.png";
+import avax from "../assets/icons/avax.png";
+import sui from "../assets/icons/sui.png";
 import arrowDown from "../assets/icons/arrowDown.svg";
 import _switch from "../assets/icons/switch.png";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const data = [
-  {
-    icon: bitcoin,
-    title: "Bitcoin",
-    short: "BTC",
-    balance: "0.00",
-  },
-  {
-    title: "Ethereum",
-    icon: ethereum,
-    short: "ETH",
-    balance: "0.00",
-  },
-  {
-    title: "SOL",
-    icon: sol,
-    short: "SOL",
-    balance: "0.00",
-  },
-  {
-    title: "USDT",
-    icon: usdt,
-    short: "USDT",
-    balance: "0.00",
-  },
-  {
-    title: "EUR",
-    icon: eur,
-    short: "EUR",
-    balance: "0.00",
-  },
-  {
-    title: "GBP",
-    icon: gbp,
-    short: "GBP",
-    balance: "0.00",
-  },
+  { icon: bitcoin, title: "Bitcoin", short: "BTC", balance: "0.00" },
+  { title: "Ethereum", icon: ethereum, short: "ETH", balance: "0.00" },
+  { title: "SOL", icon: sol, short: "SOL", balance: "0.00" },
+  { title: "USDT", icon: usdt, short: "USDT", balance: "0.00" },
+  { title: "EUR", icon: eur, short: "EUR", balance: "0.00" },
+  { title: "GBP", icon: gbp, short: "GBP", balance: "0.00" },
+  { title: "XRP", icon: xrp, short: "XRP", balance: "0.00" },
+  { title: "Avalanche", icon: avax, short: "AVAX", balance: "0.00" },
+  { title: "Sui", icon: sui, short: "SUI", balance: "0.00" },
 ];
 
-function Currency({ type, currecyName, setNewCurrency, price }) {
+// Currency Component
+function Currency({
+  type,
+  currencyName,
+  setNewCurrency,
+  price,
+  onInputChange,
+  userInput,
+}) {
   const [selectedCurrency, setSelectedCurrency] = useState({});
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const c = data.find((currency) => currency.short === currecyName);
+    const c = data.find((currency) => currency.short === currencyName);
     setSelectedCurrency(c);
-  }, [currecyName]);
+  }, [currencyName]);
 
   return (
     <div className="w-full bg-primary-900 border-[1px] border-[#BDBDBD] rounded-lg flex justify-between items-center px-4 py-2">
       <div className="flex flex-col">
         <h6 className="family-roboto">{type === "from" ? "From" : "To"}</h6>
-        <span className="text-[14px] family-roboto">{price}</span>
+        {type === "from" ? (
+          <input
+            type="number"
+            className="text-[14px] family-roboto bg-transparent border-none outline-none"
+            value={userInput}
+            onChange={onInputChange}
+          />
+        ) : (
+          <span className="text-[14px] family-roboto">{price.toFixed(6)}</span>
+        )}
       </div>
       <div className="relative">
         <div
@@ -118,14 +112,76 @@ function Currency({ type, currecyName, setNewCurrency, price }) {
 }
 
 export default function Exchange() {
-  const [firstCurrency, setFirstCurrency] = useState("SOL");
-  const [secondCurrency, setSecondCurrency] = useState("EUR");
+  const [firstCurrency, setFirstCurrency] = useState("BTC");
+  const [secondCurrency, setSecondCurrency] = useState("USDT");
+  const [prices, setPrices] = useState({
+    BTC: 58260,
+    ETH: 2466.38,
+    SOL: 134.45,
+    USDT: 1.001,
+    EUR: 1 / 0.9,
+    GBP: 1 / 0.76,
+    XRP: 0.5,
+    AVAX: 35,
+    SUI: 1.5,
+  });
+  const [inputValue, setInputValue] = useState(1);
+  const [convertedValue, setConvertedValue] = useState(0);
+
+  const fetchPrices = async () => {
+    try {
+      const response = await axios.get(
+        "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,tether,ripple,avalanche-2,sui&vs_currencies=usd"
+      );
+      const priceData = response.data;
+      setPrices({
+        BTC: priceData.bitcoin.usd,
+        ETH: priceData.ethereum.usd,
+        SOL: priceData.solana.usd,
+        USDT: priceData.tether.usd,
+        EUR: 1 / 0.9,
+        GBP: 1 / 0.76,
+        XRP: priceData.ripple.usd,
+        AVAX: priceData["avalanche-2"].usd,
+        SUI: priceData.sui.usd,
+      });
+    } catch (error) {
+      console.error("Error fetching prices:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPrices();
+    const interval = setInterval(fetchPrices, 60000); // Update prices every minute
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+    calculateConversion(e.target.value);
+  };
+
+  const calculateConversion = (input) => {
+    const fromPrice = prices[firstCurrency];
+    const toPrice = prices[secondCurrency];
+    if (fromPrice && toPrice) {
+      const conversion = (input * fromPrice) / toPrice;
+      setConvertedValue(conversion);
+    } else {
+      setConvertedValue(0);
+    }
+  };
 
   function switchCurrency() {
     const tempSecondCurrency = secondCurrency;
     setSecondCurrency(firstCurrency);
     setFirstCurrency(tempSecondCurrency);
+    calculateConversion(inputValue);
   }
+
+  useEffect(() => {
+    calculateConversion(inputValue);
+  }, [firstCurrency, secondCurrency, prices]);
 
   return (
     <div className="flex flex-col min-h-dvh">
@@ -142,9 +198,11 @@ export default function Exchange() {
         <div className="pt-[46px] w-full px-9 flex flex-col items-center gap-4">
           <Currency
             type="from"
-            currecyName={firstCurrency}
+            currencyName={firstCurrency}
             setNewCurrency={setFirstCurrency}
-            price={1.24}
+            price={prices[firstCurrency]}
+            userInput={inputValue}
+            onInputChange={handleInputChange}
           />
           <img
             src={_switch}
@@ -154,9 +212,9 @@ export default function Exchange() {
           />
           <Currency
             type="to"
-            currecyName={secondCurrency}
+            currencyName={secondCurrency}
             setNewCurrency={setSecondCurrency}
-            price={155.57}
+            price={convertedValue}
           />
         </div>
       </div>
